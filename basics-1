@@ -1,0 +1,72 @@
+"""
+Program to convert numbers to Romans
+"""
+basic_number_mapping={1:'I',
+                      2:'II',
+                      3:'III',
+                      4:'IV',
+                      5:'V',
+                      6:'VI',
+                      7:'VII',
+                      8:'VIII',
+                      9:'IX',
+                      10:'X',
+                      50:'L',
+                      100:'C',
+                      500:'D',
+                      1000:'M',}
+
+def base_roman_calculation(num):
+    Numerical=int(num)//10
+    Reminder_numerical=num-(Numerical*10)  
+    Roman_numerical=(basic_number_mapping[10]*Numerical+basic_number_mapping[Reminder_numerical] )
+    return Roman_numerical
+
+def base_roman_50_100(num):
+    delta_value=num-50
+    print('in base_roman_50_100 {}'.format(delta_value))
+    delta_roman_numerical= base_roman_calculation(delta_value)
+    Roman_numerical=basic_number_mapping[50]+delta_roman_numerical
+    print(Roman_numerical)
+    return Roman_numerical                                  
+
+def roman_calculation_100(num):
+    Numerical=int(num)//100
+    Reminder_100_numerical=num-(Numerical*100)
+
+    if Reminder_100_numerical < 50 :
+        Remainder_10_numerical=base_roman_calculation(Reminder_100_numerical)
+    elif Reminder_100_numerical > 50 and Reminder_100_numerical < 100 :
+        Remainder_10_numerical=base_roman_50_100(Reminder_100_numerical)
+
+    Roman_numerical=basic_number_mapping[100]*Numerical+Remainder_10_numerical
+    return Roman_numerical
+            
+
+Value_input=int(input("Enter the number to be converted less than 9999: "))
+#print(Value_input)
+if Value_input in basic_number_mapping.keys():
+    print(basic_number_mapping[Value_input])
+else:
+        if Value_input < 50 :
+            roman_numerical= base_roman_calculation(Value_input)
+            #print('Roman value is : {}'.format(roman_numerical))
+        elif Value_input > 50 and Value_input < 100:
+            roman_numerical=base_roman_50_100(Value_input)
+        elif Value_input > 100 and Value_input < 500:
+            roman_numerical=roman_calculation_100(Value_input)
+        elif Value_input > 500 and Value_input <1000:
+            temp_value= Value_input-500
+            partial_numerical=roman_calculation_100(temp_value)
+            roman_numerical=basic_number_mapping[500]+partial_numerical
+        elif Value_input >1000 and Value_input < 9999 :
+            Numerical=Value_input//1000
+            temp_value=Value_input-(Numerical*1000)
+            print('temp_value is {}'.format(temp_value))
+            partial_numerical=roman_calculation_100(temp_value)
+            roman_numerical=basic_number_mapping[1000]*Numerical+partial_numerical
+        else:
+            print('Number out of range')
+            exit
+                       
+        print('Roman value is : {}'.format(roman_numerical))
